@@ -31,7 +31,7 @@ The Registry change masks the new COM object that executes the compact menus wit
 
 
 
-# Restore Modern Context menus in Windows 11
+## Restore Modern Context menus in Windows 11
 
 
 
