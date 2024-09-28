@@ -1,5 +1,6 @@
 # PCTipsandInfo
-Interesting and helpful info on various topics
+Interesting and helpful info on various topics.
+This list will be updated from time to time.
 
 # Restore old Right-click Context menu in Windows 11
 Restore the old Context Menu in Windows 11
