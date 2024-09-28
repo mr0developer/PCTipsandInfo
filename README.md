@@ -2,7 +2,7 @@
 Interesting and helpful info on various topics.
 This list will be updated from time to time.
 
-# Restore old Right-click Context menu in Windows 11
+## Restore old Right-click Context menu in Windows 11
 Restore the old Context Menu in Windows 11
 
 
@@ -46,7 +46,7 @@ Restart the File Explorer or Computer for the changes to take effect.
 
 These steps can help you to enable the old context menu in Windows 11.
 
-# Steps to fix unarc.dll error and error code - 11
+## Steps to fix unarc.dll error and error code - 11
 Finally found a fix for Unarc Error Codes
 Tried "every" bullshit advice on Youtube. Probably "25 different suggestions" and NONE work.
 Everyone always comments right away "VCredist, bad ram stick, disable antivirus, page file size, clear temp folder, sfc scan checks" lolol the list goes on and on. That's not the fix for a lot of people.
