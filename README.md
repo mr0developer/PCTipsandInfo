@@ -59,7 +59,7 @@ Edit Power Plan --> Advanced Power Plan Options --> Processor Power Management -
 Open Msconfig --> boot --> Advanced Options --> Set cores to 6 - 8. (Depending on what processor you have)
 I found the reason for Unarc error codes to pop up or BSOD when installing DODI/Fitgirl repack was because "the way these massive 50-100gb files have to be decompressed causing the processor to overheat at 95C Degrees" when monitoring HWInfo and therefore causing windows to throttle with error codes or BSODs. By Setting these 2 things, my CPU Temps stayed stable 60C Degrees thus not prompting any errors
 
-##Is possible to spoof user-agent and OS with Chrome?
+## Is it possible to spoof user-agent and OS with Chrome?
 
 You can change the User Agent string in Dev Tools:
 
