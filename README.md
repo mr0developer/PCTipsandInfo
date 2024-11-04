@@ -66,16 +66,16 @@ You can change the User Agent string in Dev Tools:
 Open Developer Tools (F12)
 ![image](https://github.com/user-attachments/assets/3ad81010-bd50-4d82-b825-a7a02bee8155)
 
-Developer Tools
+
 Show the Console Drawer at the bottom by hitting Esc
 ![image](https://github.com/user-attachments/assets/68f036eb-c23f-4f39-86bb-47780f3d1c4a)
 
-Console Drawer
+
 Add the Network Conditions tab to the drawer
 ![image](https://github.com/user-attachments/assets/cd22e85d-0cae-4d9b-8a16-2f89770c2691)
 
-Network Conditions
+
 Under User Agent, uncheck "Select automatically", and pick a browser you wish to emulate or customize the string however you'd like
 ![image](https://github.com/user-attachments/assets/1639e539-de0c-4a1d-9b57-780983ec6359)
 
-User Agent
+
