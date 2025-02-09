@@ -79,3 +79,59 @@ Under User Agent, uncheck "Select automatically", and pick a browser you wish to
 ![image](https://github.com/user-attachments/assets/1639e539-de0c-4a1d-9b57-780983ec6359)
 
 
+## How can I permanently disable Windows Update service and better control when Update is run?
+
+### By modifying the group policy
+
+Open "Start" Or open the Run app (win + R)
+
+Search for gpedit.msc, then click on the top result to launch the local Group Policy Editor.
+
+Navigation to the following path: Computer Configuration>Administrative Templates>Windows Components>Windows Update>Manage end user experience
+
+Double click on the "Configure Automatic Update" policy on the right side.
+
+Select the disable option to permanently turn off automatic updates on Windows 11.
+
+Click the "Apply" button.
+
+Click the "OK" button.
+
+After completing these steps, Windows 11 will automatically stop downloading and installing updates.
+
+OR
+
+### By modifying the registry
+Press Win+R to open the "Run" dialog box, enter regedit, and then press Enter to open the Windows Registry Editor.
+
+Enter the following path in the address bar and press enter
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows
+![image](https://github.com/user-attachments/assets/ddb0e006-3787-44b8-a3f0-e982b09abeeb)
+Right-click on the Windows folder and select New > Key.
+![image](https://github.com/user-attachments/assets/0e331f4c-c162-42b4-9079-efc8534a0e66)
+Rename the newly created key as WindowsUpdate and press enter to save.
+![image](https://github.com/user-attachments/assets/1ff73105-c3f0-4452-aa52-519eb2dc1c56)
+Now, right-click on the new WindowsUpdate folder and select New > Key again.
+![image](https://github.com/user-attachments/assets/157adb6c-8956-438b-8d54-c5aebfab82b0)
+Name the key AU.
+![image](https://github.com/user-attachments/assets/38969ca0-2654-4b28-9035-6b8a0468614c)
+Move your cursor to the adjacent panel, right-click anywhere, and select New followed by DWORD (32-bit) Value.
+![image](https://github.com/user-attachments/assets/1250417a-888b-4058-845a-4569617837a2)
+Rename the new DWORD Value as NoAutoUpdate.
+![image](https://github.com/user-attachments/assets/8adaf0e4-aac9-4c4c-b196-7a48394a64d0)
+Right-click on the NoAutoUpdate value and choose Modify (or double-click on it to bring up the Modify dialogue box).
+![image](https://github.com/user-attachments/assets/00bb5f68-515a-4a55-a0a8-b13bdfadc6fd)
+The default value data will be 0, i.e., disabled; change the value data to 1 and enable the NoAutoUpdate.
+![image](https://github.com/user-attachments/assets/5783b4e7-3a2e-4d26-b4ef-2b4f77228a06)
+
+
+If you need to update the system, you must manually perform this operation from "Settings">"Windows Update", and then click the "Check for Updates" button.
+
+
+
+
+
+
+
+
