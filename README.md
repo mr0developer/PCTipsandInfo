@@ -3,31 +3,35 @@ Interesting and helpful info on various topics.
 This list will be updated from time to time.
 
 ## Restore old Right-click Context menu in Windows 11
-Restore the old Context Menu in Windows 11
+Copy and paste this into an command prompt.
 
+No need to reboot. Note- it will restart windows explorer though.
 
+:: Set "Old" Explorer Context Menu as Default
+reg add "HKEY_CURRENT_USER\SOFTWARE\CLASSES\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /ve /f
 
-Right-click the Start button and choose Windows Terminal.
+:: Remove Explorer "Command Bar"
+reg add "HKCU\Software\Classes\CLSID\{d93ed569-3b3e-4bff-8355-3c44f6a52bb5}\InprocServer32" /f /ve
 
-Copy the command from below, paste it into Windows Terminal Window, and press enter.
+:: Restart Windows Explorer. (Applies the above settings without needing a reboot)
+taskkill /f /im explorer.exe
+start explorer.exe
 
-reg.exe add "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /f /ve
+:: Empty Comment (Prevents you from having to press "enter" to execute the line to restart explorer.exe)
 
-Restart File Explorer or your computer for the changes to take effect.
+If, you want the windows 11 style back....
 
-You would see the Legacy Right click Context menu by default.
+:: Restore Win 11 Explorer Context Menu
+reg.exe delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
 
+:: Restore Win 11 Explorer Command Bar
+reg.exe delete "HKCU\Software\Classes\CLSID\{d93ed569-3b3e-4bff-8355-3c44f6a52bb5}" /f
 
+:: Restart Windows Explorer. (Applies the above settings without needing a reboot)
+taskkill /f /im explorer.exe
+start explorer.exe
 
-![image](https://github.com/user-attachments/assets/5bf3ef0e-1864-4d48-8f18-010ccdcf2167)
-
-
-Command in Windows Terminal to Restore old context menu 
-
-
-
-The Registry change masks the new COM object that executes the compact menus with the "Show more options" entry. Once you get this performed, Explorer reverts to the Legacy context menu. 
-
+:: Empty Comment (Prevents you from having to press "enter" to execute the line to restart explorer.exe)
 
 
 
