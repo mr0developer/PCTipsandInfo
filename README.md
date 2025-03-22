@@ -128,7 +128,20 @@ The default value data will be 0, i.e., disabled; change the value data to 1 and
 
 If you need to update the system, you must manually perform this operation from "Settings">"Windows Update", and then click the "Check for Updates" button.
 
+## How can I prevent VS Code from replacing a newly opened, unmodified (preview) tab with a subsequently opened one?
+When you [single-]click a file in the left sidebar's file browser or open it from the quick open menu (Ctrl-P, type the file name, Enter), Visual Studio Code opens it in what's called "Preview Mode", which allows you to quickly view files.
 
+Preview Mode tabs are not kept open. As soon as you go to open another file from the sidebar, the existing Preview Mode tab (if one exists) is used. You can determine if a tab is in Preview Mode, by looking at its title in the tab bar. If the title is italic, the tab is in preview mode.
+
+To open a file for editing (i.e. don't open in Preview Mode), double-click on the file in the sidebar, or single-click it in the sidebar then double click the title of its Preview Mode tab.
+
+If you want to disable Preview Mode all together, you can do so by setting "workbench.editor.enablePreview": false in your settings file. You can also use the "workbench.editor.enablePreviewFromQuickOpen" option to disable it only from the quick open menu.
+
+Before you can disable Preview Mode, you'll need to open your Settings File.
+
+Pro Tip: You can use the Command Palette(shortcut Ctrl+Shift+P) to open your settings file, just enter "Preferences: Open User Settings"!
+
+Once you've opened your settings file (your settings file should be located on the right), add the "workbench.editor.enablePreview" property, and set its value to false.
 
 
 
