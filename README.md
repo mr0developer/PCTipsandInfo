@@ -6,7 +6,7 @@ This list will be updated from time to time.
 Copy and paste this into an command prompt.
 
 No need to reboot. Note- it will restart windows explorer though.
-
+```
 :: Set "Old" Explorer Context Menu as Default
 reg add "HKEY_CURRENT_USER\SOFTWARE\CLASSES\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}\InprocServer32" /ve /f
 
@@ -18,9 +18,9 @@ taskkill /f /im explorer.exe
 start explorer.exe
 
 :: Empty Comment (Prevents you from having to press "enter" to execute the line to restart explorer.exe)
-
+```
 If, you want the windows 11 style back....
-
+```
 :: Restore Win 11 Explorer Context Menu
 reg.exe delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
 
@@ -32,23 +32,8 @@ taskkill /f /im explorer.exe
 start explorer.exe
 
 :: Empty Comment (Prevents you from having to press "enter" to execute the line to restart explorer.exe)
+```
 
-
-
-## Restore Modern Context menus in Windows 11
-
-
-
-To undo this change, in a Terminal Window, execute this command:
-
-reg.exe delete "HKCU\Software\Classes\CLSID\{86ca1aa0-34aa-4e8b-a509-50c905bae2a2}" /f
-
-
-
-Restart the File Explorer or Computer for the changes to take effect.
-
-
-These steps can help you to enable the old context menu in Windows 11.
 
 ## Steps to fix unarc.dll error and error code - 11
 Finally found a fix for Unarc Error Codes
