@@ -163,5 +163,15 @@ pause
 3. then run this file as administrator
 
 
+## My windows 11 WiFi isn't showing up at all fixed
+It appears the DNS Client service is set to "Disabled". To set the startup type of the service to Manual, follow these steps:
 
+Open RegEdit.exe and go to:
 
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Dnscache
+
+Double-click "Start" and set its data to "3".
+
+Close RegEdit.
+
+Restart Windows.
