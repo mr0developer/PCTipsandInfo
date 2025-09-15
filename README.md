@@ -175,3 +175,5 @@ Double-click "Start" and set its data to "3".
 Close RegEdit.
 
 Restart Windows.
+
+## Windows 11 basic shortcuts
