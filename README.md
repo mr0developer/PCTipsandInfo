@@ -176,4 +176,10 @@ Close RegEdit.
 
 Restart Windows.
 
-## Windows 11 basic shortcuts
+## How do I print a list of all installed programs/apps on my Windows 10 computer?
+From admin Command Prompt, run:
+
+winget list >c:\apps.txt
+Press Enter.
+
+Open C:\Apps.txt.
