@@ -176,6 +176,25 @@ Close RegEdit.
 
 Restart Windows.
 
+## Windows 11 WiFi connected but not working on PC
+Try 'network reset' option in windows settings or try the following cmds run as administrator:
+
+Type ipconfig /flushdns and press Enter.
+
+Type ipconfig /registerdns and press Enter
+
+Type ipconfig /release and press Enter.
+
+Type ipconfig /renew and press Enter.
+
+Type netsh winsock reset and press Enter.
+
+Reboot the computer.
+
+Check your ethernet adapter properties from 'adaptor options' go into ipv4 properties, ensure you are set to automatic.
+
+Also ipv4 needs to be ticked.
+
 ## How do I print a list of all installed programs/apps on my Windows 10 computer?
 From admin Command Prompt, run:
 
