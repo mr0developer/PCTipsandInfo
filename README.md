@@ -225,7 +225,7 @@ To capture the injection mechanism before the page redirected away, we used the 
 4. **Analyzing the Stack:** Checking the **Initiator** column led directly to a dynamically injected piece of JavaScript named `mm.js`.
 
 
-## 🕵️‍♂️ Step 2: Code Analysis of `mm.js`
+##  Step 2: Code Analysis of `mm.js`
 Deobfuscating the script revealed a global, event-driven trap bound directly to the root document:
 
 ```javascript
@@ -250,7 +250,7 @@ document.addEventListener('click', function(e) {
 * Inspection of the HTML code structure (`Elements` panel) revealed that the authentic landing page URLs were completely stripped from standard `href` tags and hidden deep inside a custom wrapper attribute: `<a data-original="https://real-target-link.com">`.
 
 
-## 💡 Step 3: The Solution (Dynamic Interception Script)
+##  Step 3: The Solution (Dynamic Interception Script)
 Instead of relying on rigid, static blocklists, the most elegant solution was to **subvert the adware from the inside out**.
 
 By exploiting JavaScript’s `Object.defineProperty()`, we intercepted the global window scope to hook into the `puURLstrpcht` variable. Every time the malicious script requests the ad URL, our script dynamically evaluates the element the user clicked, extracts the hidden `data-original` attribute, and supplies *that* as the destination instead.
@@ -283,7 +283,7 @@ Install **Tampermonkey** or **Violentmonkey**, create a new script, and use the 
             const originalAnchor = activeElement ? activeElement.closest('a') : null;
 
             if (originalAnchor) {
-                // 🎯 Target: Extract the hidden URL buried inside the custom attribute
+                //  Target: Extract the hidden URL buried inside the custom attribute
                 const hiddenTarget = originalAnchor.getAttribute('data-original');
                 
                 if (hiddenTarget) {
