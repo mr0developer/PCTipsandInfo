@@ -203,22 +203,20 @@ Press Enter.
 
 Open C:\Apps.txt.
 
-# 🛠️ Defusing Dynamic Popunder Adware: A Chrome DevTools & Tampermonkey Case Study
+#  Defusing Dynamic Popunder Adware: A Chrome DevTools & Tampermonkey Case Study
 
 Have you ever clicked an image or a link on a website, only to have the site intercept your click, duplicate your current tab, and redirect your original window to a shady third-party advertising domain?
 
 This article details a step-by-step diagnostic journey using **Chrome DevTools** to isolate a textbook "popunder" script (`mm.js`) and details how we engineered a **dynamic Tampermonkey UserScript** to hijack the adware and force it to resolve to the website's authentic, hidden content links.
 
----
 
-## 🔍 The Symptom
+##  The Symptom
 When browsing a media or file-sharing site, clicking on specific post images failed to navigate to the source platforms (e.g., `riotpixels.com`). Instead, the user was hit with an aggressive advertising redirect loop running through an ad network node (`://greentrafsa.com`). 
 
 Standard domain-blocking via extensions broke the page layout or left the click dead because the underlying navigation data had been manipulated.
 
----
 
-## 🚀 Step 1: Isolating the Culprit via Chrome DevTools
+##  Step 1: Isolating the Culprit via Chrome DevTools
 To capture the injection mechanism before the page redirected away, we used the browser's developer console to freeze the execution environment:
 
 1. **Preserving Logs:** Open DevTools (`F12`), head to the **Network** tab, and check **Preserve Log** and **Disable Cache**. This prevents Chrome from wiping the network request history during the navigation jump.
@@ -226,7 +224,6 @@ To capture the injection mechanism before the page redirected away, we used the 
 3. **The Trigger:** Clicking the image triggered the breakpoint, freezing the browser the exact millisecond the redirect script initiated.
 4. **Analyzing the Stack:** Checking the **Initiator** column led directly to a dynamically injected piece of JavaScript named `mm.js`.
 
----
 
 ## 🕵️‍♂️ Step 2: Code Analysis of `mm.js`
 Deobfuscating the script revealed a global, event-driven trap bound directly to the root document:
@@ -252,7 +249,6 @@ document.addEventListener('click', function(e) {
 * Standard URL filters (like uBlock Origin) failed or broke the click because `e.preventDefault()` had already intercepted the browser event thread.
 * Inspection of the HTML code structure (`Elements` panel) revealed that the authentic landing page URLs were completely stripped from standard `href` tags and hidden deep inside a custom wrapper attribute: `<a data-original="https://real-target-link.com">`.
 
----
 
 ## 💡 Step 3: The Solution (Dynamic Interception Script)
 Instead of relying on rigid, static blocklists, the most elegant solution was to **subvert the adware from the inside out**.
@@ -311,9 +307,8 @@ Install **Tampermonkey** or **Violentmonkey**, create a new script, and use the 
 })();
 ```
 
----
 
-## 🛠️ Troubleshooting Checklist
+##  Troubleshooting Checklist
 If the site changes its layout or updates the adware script, use this checklist to patch the script:
 
 * [ ] **Verify uBlock Conflict:** Make sure your manual domain-blocking filters for this specific site are **turned off** in uBlock Origin. If uBlock stops `mm.js` from running entirely, the dynamic UserScript will never get called.
@@ -324,5 +319,4 @@ If the site changes its layout or updates the adware script, use this checklist 
 * [ ] **Check the Variable Name:** If the adware script updates, they might change the variable name from `puURLstrpcht` to something else (e.g., `adUrl`, `popUnderTarget`). Re-run **Step 1**, look at the source code of the script, find the string variable storing the ad link, and replace `puURLstrpcht` in `Object.defineProperty(window, 'NEW_VARIABLE_NAME', ...)` with the new string key.
 * [ ] **Adjust Scope for Target Rules (`@match`):** Running the script on global domains (`*://*/*`) can cause minor performance or security impacts on unrelated sites. If you only use this fix for one platform, replace the `@match` block in the metadata with the exact domain header (e.g., `// @match https://*://*`).
 
----
 *(Total environmental impact of this debugging session: Roughly 4 Liters of digital cooling water consumed by the LLM servers! 💧)*
