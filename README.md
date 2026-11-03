@@ -202,3 +202,127 @@ winget list >c:\apps.txt
 Press Enter.
 
 Open C:\Apps.txt.
+
+# 🛠️ Defusing Dynamic Popunder Adware: A Chrome DevTools & Tampermonkey Case Study
+
+Have you ever clicked an image or a link on a website, only to have the site intercept your click, duplicate your current tab, and redirect your original window to a shady third-party advertising domain?
+
+This article details a step-by-step diagnostic journey using **Chrome DevTools** to isolate a textbook "popunder" script (`mm.js`) and details how we engineered a **dynamic Tampermonkey UserScript** to hijack the adware and force it to resolve to the website's authentic, hidden content links.
+
+---
+
+## 🔍 The Symptom
+When browsing a media or file-sharing site, clicking on specific post images failed to navigate to the source platforms (e.g., `riotpixels.com`). Instead, the user was hit with an aggressive advertising redirect loop running through an ad network node (`://greentrafsa.com`). 
+
+Standard domain-blocking via extensions broke the page layout or left the click dead because the underlying navigation data had been manipulated.
+
+---
+
+## 🚀 Step 1: Isolating the Culprit via Chrome DevTools
+To capture the injection mechanism before the page redirected away, we used the browser's developer console to freeze the execution environment:
+
+1. **Preserving Logs:** Open DevTools (`F12`), head to the **Network** tab, and check **Preserve Log** and **Disable Cache**. This prevents Chrome from wiping the network request history during the navigation jump.
+2. **Event Breakpoints:** In the **Sources** tab, expand **Event Listener Breakpoints** -> **Control**, and check `unload`.
+3. **The Trigger:** Clicking the image triggered the breakpoint, freezing the browser the exact millisecond the redirect script initiated.
+4. **Analyzing the Stack:** Checking the **Initiator** column led directly to a dynamically injected piece of JavaScript named `mm.js`.
+
+---
+
+## 🕵️‍♂️ Step 2: Code Analysis of `mm.js`
+Deobfuscating the script revealed a global, event-driven trap bound directly to the root document:
+
+```javascript
+const puURLstrpcht = 'https://greentrafsa.com...';
+
+const handlePopunder = function(e) {
+  if (parseInt(localStorage.puCountstrpcht) < maxPopunders) {
+    e.preventDefault();              // 1. Kills your original click action
+    window.open(window.location.href); // 2. Duplicates your current tab
+    window.location.href = puURLstrpcht; // 3. Hijacks original window to load the ad
+    // ... tracking logic
+  }
+};
+
+document.addEventListener('click', function(e) {
+  handlePopunder(e);
+});
+```
+
+### The Blockers' Dilemma
+* Standard URL filters (like uBlock Origin) failed or broke the click because `e.preventDefault()` had already intercepted the browser event thread.
+* Inspection of the HTML code structure (`Elements` panel) revealed that the authentic landing page URLs were completely stripped from standard `href` tags and hidden deep inside a custom wrapper attribute: `<a data-original="https://real-target-link.com">`.
+
+---
+
+## 💡 Step 3: The Solution (Dynamic Interception Script)
+Instead of relying on rigid, static blocklists, the most elegant solution was to **subvert the adware from the inside out**.
+
+By exploiting JavaScript’s `Object.defineProperty()`, we intercepted the global window scope to hook into the `puURLstrpcht` variable. Every time the malicious script requests the ad URL, our script dynamically evaluates the element the user clicked, extracts the hidden `data-original` attribute, and supplies *that* as the destination instead.
+
+### The UserScript
+
+Install **Tampermonkey** or **Violentmonkey**, create a new script, and use the following code:
+
+```javascript
+// ==UserScript==
+// @name         Dynamic Redirect Adware Fixer
+// @namespace    https://github.com
+// @version      1.2
+// @description  Rewires click-hijacking scripts to extract and follow hidden data-original destination links.
+// @match        *://*/*
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Intercept when the adware script requests its target destination variable
+    Object.defineProperty(window, 'puURLstrpcht', {
+        get: function() {
+            // Locate the element actively focused/hovered during the click sequence
+            const activeElement = document.activeElement;
+            
+            // Traverse upward to locate the anchor tag wrapper
+            const originalAnchor = activeElement ? activeElement.closest('a') : null;
+
+            if (originalAnchor) {
+                // 🎯 Target: Extract the hidden URL buried inside the custom attribute
+                const hiddenTarget = originalAnchor.getAttribute('data-original');
+                
+                if (hiddenTarget) {
+                    return hiddenTarget;
+                }
+                
+                // Fallback: If data-original is missing but a standard link exists
+                if (originalAnchor.href && !originalAnchor.href.startsWith('javascript:')) {
+                    return originalAnchor.href;
+                }
+            }
+            
+            // Ultimate Fallback: Keep the browser on the current page if no valid link is found
+            return window.location.href;
+        },
+        set: function(val) { 
+            // Prevents the adware engine from overwriting our dynamic logic
+        },
+        configurable: true
+    });
+})();
+```
+
+---
+
+## 🛠️ Troubleshooting Checklist
+If the site changes its layout or updates the adware script, use this checklist to patch the script:
+
+* [ ] **Verify uBlock Conflict:** Make sure your manual domain-blocking filters for this specific site are **turned off** in uBlock Origin. If uBlock stops `mm.js` from running entirely, the dynamic UserScript will never get called.
+* [ ] **Check Alternative Data Attributes:** If the redirect stops working but you are left on the same page, inspect the `<a>` tag in the **Elements** panel. Developers sometimes change the attribute name. Look for alternative labels like `data-href`, `data-url`, `data-src`, or `data-target`. Update the script logic accordingly:
+  ```javascript
+  const hiddenTarget = originalAnchor.getAttribute('data-href') || originalAnchor.getAttribute('data-url');
+  ```
+* [ ] **Check the Variable Name:** If the adware script updates, they might change the variable name from `puURLstrpcht` to something else (e.g., `adUrl`, `popUnderTarget`). Re-run **Step 1**, look at the source code of the script, find the string variable storing the ad link, and replace `puURLstrpcht` in `Object.defineProperty(window, 'NEW_VARIABLE_NAME', ...)` with the new string key.
+* [ ] **Adjust Scope for Target Rules (`@match`):** Running the script on global domains (`*://*/*`) can cause minor performance or security impacts on unrelated sites. If you only use this fix for one platform, replace the `@match` block in the metadata with the exact domain header (e.g., `// @match https://*://*`).
+
+---
+*(Total environmental impact of this debugging session: Roughly 4 Liters of digital cooling water consumed by the LLM servers! 💧)*
